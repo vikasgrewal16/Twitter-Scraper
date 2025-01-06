@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trending Topics</title>
+</head>
+<body>
+    <h1>Click the button to fetch trending topics</h1>
+    <button id="fetchTrends">Run the Script</button>
+    <div id="results"></div>
+
+    <script>
+        document.getElementById('fetchTrends').addEventListener('click', function () {
+            fetch('/run-script')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('results').innerHTML = `
+                        <h2>These are the most happening topics as on ${data.date}</h2>
+                        <ul>
+                            ${data.trends.map(trend => `<li>${trend}</li>`).join('')}
+                        </ul>
+                        <p>The IP address used for this query was ${data.ip}</p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                });
+        });
+    </script>
+</body>
+</html>
